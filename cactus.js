@@ -5,7 +5,7 @@ import {
 } from "./update.js"
 
 const SPEED = 0.05
-const CACTUS_INTERVAL_MIN = 700
+const CACTUS_INTERVAL_MIN = 800
 const CACTUS_INTERVAL_MAX = 2000
 const worldElem = document.querySelector("[data-world]")
 
@@ -42,8 +42,10 @@ export function getCactusRects() {
 function createCactus() {
   const cactus = document.createElement("img")
   cactus.dataset.cactus = true
-  cactus.src = "images/cactus.png"
+  cactus.src = "images/oil-cans.png"
   cactus.classList.add("cactus")
+  // cactus.classList.add("oil-cans")
+
   setCustomProperty(cactus, "--left", 100)
   worldElem.append(cactus)
 }
