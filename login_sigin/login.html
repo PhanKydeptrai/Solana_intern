@@ -54,6 +54,7 @@
     </div>
 
     <script>
+        // Handle form submission
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const username = document.getElementById('username').value;
@@ -62,11 +63,32 @@
             alert("Login successful!");
         });
 
+        // Handle Google login response
         function handleCredentialResponse(response) {
-            console.log("Encoded JWT ID token:", response.credential);
-            alert("Login with Google successful!");
+            const idToken = response.credential; // ID Token from Google
+            console.log("Encoded JWT ID token:", idToken);
+            
+            // Send the ID token to your backend for verification
+            fetch('http://localhost:5000/api/auth/google-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ idToken: idToken })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Backend response:", data);
+                alert("Login with Google successful!");
+                // Handle successful login (e.g., redirect to dashboard)
+            })
+            .catch(error => {
+                console.error("Error logging in with Google:", error);
+                alert("Login failed. Please try again.");
+            });
         }
 
+        // Initialize Google Sign-In
         window.onload = function() {
             google.accounts.id.initialize({
                 client_id: "835842426961-bc5hoohs4b4ev79tbmdjbf14gbd6n73l.apps.googleusercontent.com", // Replace with your Client ID
