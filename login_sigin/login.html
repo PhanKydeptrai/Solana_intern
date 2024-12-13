@@ -68,19 +68,21 @@
             const idToken = response.credential; // ID Token from Google
             console.log("Encoded JWT ID token:", idToken);
             
-            // Send the ID token to your backend for verification
-            fetch('http://localhost:5000/api/auth/google-login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ idToken: idToken })
+            // Replace the token in the endpoint and send the request
+            const apiEndpoint = `https://solanagameapi.azurewebsites.net/api/login/google-login/${idToken}`;
+            
+            fetch(apiEndpoint, {
+                method: 'POST'
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Backend response:", data);
-                alert("Login with Google successful!");
-                // Handle successful login (e.g., redirect to dashboard)
+            .then(response => {
+                if (response.status === 200) {
+                    alert("Login with Google successful!");
+                    console.log("Backend response: Login successful");
+                    // Redirect or perform actions after successful login
+                } else {
+                    alert("Login failed. Please try again.");
+                    console.error("Backend response: Login failed");
+                }
             })
             .catch(error => {
                 console.error("Error logging in with Google:", error);
